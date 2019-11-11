@@ -1,1 +1,2 @@
-# Reinforcement_Learning_Textbook_Exercises
+# Reinforcement Learning Textbook Exercises
+Completed as part of my RL class
