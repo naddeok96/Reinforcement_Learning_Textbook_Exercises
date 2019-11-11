@@ -9,22 +9,22 @@ class RaceTrack():
     def __init__(self):
         super(RaceTrack, self).__init__()
 
-        print("==========================")
-        starting_states = [[] for i in range(6)]
+        print("===============================================================================")
+        self.starting_states = [[] for i in range(6)]
         for i in range(6):
-            starting_states[i] = [31, i+3]
-        print("Starting States: \n",starting_states)
+            self.starting_states[i] = [31, i+3]
+        print("Starting States: \n",self.starting_states)
 
-        terminal_states = [[] for i in range(6)]
+        self.terminal_states = [[] for i in range(6)]
         for i in range(6):
-            terminal_states[i] = [i, 16]
-        print("Terminal States: \n",terminal_states)
+            self.terminal_states[i] = [i, 16]
+        print("Terminal States: \n",self.terminal_states)
 
-        states = [[] for i in range((17*32))]
+        self.states = [[] for i in range((17*32))]
         for i in range(17):
             for j in range(32):
-                states[(i*32) + j] = [j,i]
-        print("States: \n",states)
+                self.states[(i*32) + j] = [j,i]
+        print("States: \n",self.states)
 
         bound1 = [[] for i in range(4)]
         for i in range(4):
@@ -58,11 +58,11 @@ class RaceTrack():
                 bound8[(i*7) + j] = [i + 6, j +10]
 
         bounds = bound1 + bound2 + bound3 + bound4 + bound5 + bound6 + bound7 + bound8
-        print("Bounds: ", bounds)
+        print("Bounds: \n", bounds)
 
-        for state in bounds: states.remove(state)
+        for state in bounds: self.states.remove(state)
 
-        print("==========================")
+        print("===============================================================================\n\n")
 
     def step(self, state, action, velocity):
         print("==========================")
@@ -71,18 +71,24 @@ class RaceTrack():
         print("Action ", action)
         print("--------------------------")
 
-        velocity = velocity + action
-        state = state + velocity
+        velocity = list(np.asarray(velocity) + np.asarray(action))
 
-        if state not in states:
-            state = random.choice(starting_states)
+        mirror_effect = [-1*velocity[0], velocity[1]]
+
+
+        state = list(np.asarray(state) + mirror_effect)
+
+        if state not in self.states:
+            state = random.choice(self.starting_states)
             velocity = [0,0]
 
-        if state in terminal_states:
+        terminate = False
+        if state in self.terminal_states:
             terminate = True
 
         print("Final State: ", state)
         print("Final Velocity: ", velocity)
+        print("Episode Terminated: ", terminate)
         print("==========================")
 
         return state, velocity, terminate
@@ -91,8 +97,8 @@ class RaceTrack():
 
 race = RaceTrack()
 
-state = [0,0]
-action = [2,3]
+state = [31, 7]
+action = [3,-3]
 velocity = [0,0]
 
 race.step(state,action,velocity)
