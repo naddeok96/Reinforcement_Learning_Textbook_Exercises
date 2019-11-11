@@ -94,11 +94,3 @@ class RaceTrack():
         return state, velocity, terminate
 
 
-
-race = RaceTrack()
-
-state = [31, 7]
-action = [3,-3]
-velocity = [0,0]
-
-race.step(state,action,velocity)
