@@ -10,6 +10,7 @@ class RaceTrack():
 
         super(RaceTrack, self).__init__()
 
+        print("Environment Hyperparameters")
         print("===============================================================================")
         # Initalize possible starting states
         self.starting_states = [[] for i in range(6)]
@@ -20,7 +21,7 @@ class RaceTrack():
         # Initalize terminal states
         self.terminal_states = [[] for i in range(6*4)]
         for i in range(6):
-            for j in range(4)
+            for j in range(4):
                 self.terminal_states[(i*4) + j] = [i, 16 + j]
         print("Terminal States: \n",self.terminal_states)
 
@@ -69,7 +70,7 @@ class RaceTrack():
         # Remove states in the square grid that are out of bounds
         for state in bounds: self.states.remove(state)
 
-        print("===============================================================================\n\n")
+        print("===============================================================================\n")
 
     def step(self, state, action, velocity):
         '''
@@ -78,6 +79,7 @@ class RaceTrack():
         the episode reached its terminal state
         '''
 
+        print("Step Results")
         print("==========================")
         print("Inital State: ", state)
         print("Intial Velocity:  ", velocity)
@@ -85,9 +87,11 @@ class RaceTrack():
         print("--------------------------")
 
         # Compute new velocity given action
-        intial_velocity = self.velocity
+        intial_velocity = velocity
         velocity = list(np.asarray(velocity) + np.asarray(action))
-        self.fix_velocity(velocity, intial_velocity)
+
+        # Ensure velocity is within bounds
+        self.fix_velocity(velocity, intial_velocity, state)
 
         # The way the gridworld is set up a negative velocity is needed to move forward
         #  so this just flips the sign of the vertical velocity for calculating next state
@@ -109,11 +113,11 @@ class RaceTrack():
         print("Final State: ", state)
         print("Final Velocity: ", velocity)
         print("Episode Terminated: ", terminate)
-        print("==========================")
+        print("==========================\n")
 
         return state, velocity, terminate
 
-    def fix_velocity(self,velocity, intial_velocity):
+    def fix_velocity(self,velocity, intial_velocity, state):
         '''
         This function will limit the velocity to its max and min value and 
         prevent the car from coming to a stop at any point
@@ -127,8 +131,11 @@ class RaceTrack():
             velocity[1] = 3
         if velocity[1] < -3:
             velocity[1] = -3
-        if velocity == [0,0]
+        if velocity == [0,0] and state not in self.starting_states:
             velocity = intial_velocity
+        if velocity == [0,0] and state in self.starting_states:
+            velocity = [1,0]
+        
 
         return velocity
         
