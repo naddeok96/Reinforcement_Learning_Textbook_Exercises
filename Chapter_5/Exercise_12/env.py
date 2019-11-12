@@ -24,7 +24,7 @@ class RaceTrack():
         for i in range(17):
             for j in range(32):
                 self.states[(i*32) + j] = [j,i]
-        print("States: \n",self.states)
+        #print("States: \n",self.states)
 
         bound1 = [[] for i in range(4)]
         for i in range(4):
@@ -58,7 +58,7 @@ class RaceTrack():
                 bound8[(i*7) + j] = [i + 6, j +10]
 
         bounds = bound1 + bound2 + bound3 + bound4 + bound5 + bound6 + bound7 + bound8
-        print("Bounds: \n", bounds)
+        #print("Bounds: \n", bounds)
 
         for state in bounds: self.states.remove(state)
 
@@ -72,6 +72,8 @@ class RaceTrack():
         print("--------------------------")
 
         velocity = list(np.asarray(velocity) + np.asarray(action))
+        self.fix_velocity(velocity)
+
 
         mirror_effect = [-1*velocity[0], velocity[1]]
 
@@ -93,4 +95,16 @@ class RaceTrack():
 
         return state, velocity, terminate
 
+    def fix_velocity(self,velocity):
+        if velocity[0] > 3:
+            velocity[0] = 3
+        if velocity[0] < -3:
+            velocity[0] = -3
+        if velocity[1] > 3:
+            velocity[1] = 3
+        if velocity[1] < -3:
+            velocity[1] = -3
+
+        return velocity
+        
 
