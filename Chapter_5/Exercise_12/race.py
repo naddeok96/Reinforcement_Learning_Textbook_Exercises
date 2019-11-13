@@ -8,15 +8,46 @@ from agent import agent
 from silence import shh
 import matplotlib.pyplot as plt
 import numpy as np
+import copy
 
 # Initalize agent and enviroment
 racer = agent()
 
 # Race for n number of episodes
-n_episodes = 100
-for i in range(n_episodes):
+n_episodes = 200
+converged = False
+converged_counter = 0
+initial_converged = False
+streak = []
+episode = 0
+LOG_EVERY_N = 1e5
+#for i in range(n_episodes):
+while converged_counter < 1e5 and episode < 1e7:
+    episode += 1
+    old_policy = copy.copy(racer.policy)
+    
     with shh(): # shh() suppresses print outs from calls
         racer.episode()
+    
+    initial_converged = converged
+    converged = (racer.policy == old_policy)
+
+    if converged == initial_converged and converged == True:
+        converged_counter += 1
+
+    if converged_counter > 0 and converged != initial_converged:
+        converged_counter = 0
+
+    if episode % LOG_EVERY_N == 0:
+        print("--------------------------------")
+        print("Episode:")
+        print(episode)
+        print("Converged counter:")
+        print(converged_counter)
+        print("--------------------------------\n")
+
+print("Converged:")
+print(converged)
 
 # Plot
 fig, ax = plt.subplots()
@@ -37,6 +68,4 @@ ax.set_xticks(np.arange(-1.5, 18.5, 1), minor=True)
 ax.set_yticks(np.arange(-1.5, 33.5, 1), minor=True)
 ax.grid(which='minor', color='w', linestyle='-', linewidth=2)
 plt.show()
-
-
 
