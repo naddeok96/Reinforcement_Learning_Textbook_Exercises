@@ -122,7 +122,6 @@ class RaceTrack():
         This function will limit the velocity to its max and min value and 
         prevent the car from coming to a stop at any point
         '''
-
         if velocity[0] > 3:
             velocity[0] = 3
         if velocity[0] < -3:
@@ -135,7 +134,6 @@ class RaceTrack():
             velocity = intial_velocity
         if velocity == [0,0] and state in self.starting_states:
             velocity = [1,0]
-        
 
         return velocity
         

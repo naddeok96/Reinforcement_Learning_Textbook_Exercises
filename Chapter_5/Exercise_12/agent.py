@@ -82,8 +82,8 @@ class agent():
                 self.returns[str(self.env.states[i]+self.actions[j])] = []
         G = 0
 
-        print("Episode",self.n_episodes, "Results")
-        print("----------------------------------------")
+        print("Episode",self.n_episodes, "Summary")
+        print("====================================================")
 
         # Run episode until termination
         iteration = 0
@@ -106,11 +106,9 @@ class agent():
             history.append([state + action])
             
             # Take one step
-            with shh():
+            with shh(): # shh() suppresses print outs from calls
                 state, velocity, terminate = self.env.step(state, action, velocity)
 
-        print("Episode Summary")
-        print("==========================")
         #print("History: ")
         #print(history)
         #print("--------------------------------")
@@ -118,15 +116,16 @@ class agent():
         # Find Unique History        
         history.sort()
         unique_history = list(history for history,_ in itertools.groupby(history))
-        print("Unique History: ")
+        print("Unique States Visited: ")
         print(unique_history)
         print("--------------------------------")
         
+        # Update state-action value for each state visited
         for state_action in unique_history:
             self.qfunc[str(state_action[0])] = mean(self.returns[str(state_action[0])])
             
-        print("Policy Update:")
-        print('====================================================\n')
+        # Update the policy for states visited
+        print("Policy Updates:")
         for i in range(len(unique_history)):
             state = unique_history[i][0][0:2]
 
@@ -135,13 +134,13 @@ class agent():
             qvalues = []
             for action in self.actions:
                 qvalues.append(self.qfunc[str(state+action)])
-                print("Action:", action, "Value:", self.qfunc[str(state+action)])
             
             print("Old Policy:",self.policy[str(state)])
+            # Update policy for state
             self.policy[str(state)] = self.actions[np.argmax(qvalues)]
             print("New Policy", self.policy[str(state)])
         
 
-        print("--------------------------------")
+        print("====================================================\n")
         
 
