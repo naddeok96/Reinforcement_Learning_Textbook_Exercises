@@ -8,6 +8,7 @@ import random
 import numpy as np
 from statistics import mean
 import itertools
+from silence import shh
 
 
 class agent():
@@ -54,7 +55,6 @@ class agent():
         # Initalize episode counter
         self.n_episodes = 0
 
-
     def episode(self):
         '''
         This function will run an episode and update the policy and Q-function
@@ -84,8 +84,15 @@ class agent():
 
         print("Episode",self.n_episodes, "Results")
         print("----------------------------------------")
+
         # Run episode until termination
-        for i in range(100): #while terminate == False:
+        iteration = 0
+        #for i in range(100): 
+        while terminate == False and iteration < 100:
+
+            # Update Iteration
+            iteration += 1
+
             # Compute action given state
             action = self.policy[str(state)]
 
@@ -99,17 +106,21 @@ class agent():
             history.append([state + action])
             
             # Take one step
-            state, velocity, terminate = self.env.step(state, action, velocity)
+            with shh():
+                state, velocity, terminate = self.env.step(state, action, velocity)
 
         print("Episode Summary")
         print("==========================")
-        print("History: ")
-        print(history)
-        print("--------------------------------")
+        #print("History: ")
+        #print(history)
+        #print("--------------------------------")
 
         # Find Unique History        
         history.sort()
         unique_history = list(history for history,_ in itertools.groupby(history))
+        print("Unique History: ")
+        print(unique_history)
+        print("--------------------------------")
         
         for state_action in unique_history:
             self.qfunc[str(state_action[0])] = mean(self.returns[str(state_action[0])])
@@ -118,7 +129,7 @@ class agent():
         print('====================================================\n')
         for i in range(len(unique_history)):
             state = unique_history[i][0][0:2]
-            
+
             print('--------------------------------')
             print("State:", state)
             qvalues = []
@@ -129,13 +140,8 @@ class agent():
             print("Old Policy:",self.policy[str(state)])
             self.policy[str(state)] = self.actions[np.argmax(qvalues)]
             print("New Policy", self.policy[str(state)])
+        
 
         print("--------------------------------")
         
-        
-        
-
-
-racer = agent()
-racer.episode()
 
