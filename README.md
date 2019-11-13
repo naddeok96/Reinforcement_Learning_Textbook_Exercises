@@ -2,7 +2,7 @@
 
 ## Table of Contents
 > Chapter 5
-- [Race Track] 
+- [Race Track](#racetrack)
 
 ---
 
