@@ -15,8 +15,7 @@ The goal of this exercise is to train an agent with any Monte-Carlo method to pe
 
 This track was built in the env.py file which builds a class containing the track and transitions.
 
-The MC method used will be Exploring States
-
+The MC method used will be Exploring Starts
 ![image](https://user-images.githubusercontent.com/48805713/68788016-69e68f00-05f7-11ea-8a36-89a70ec392ab.png)
 
 The agent will uses this algorithm to update its policy. 
