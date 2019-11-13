@@ -14,14 +14,14 @@ import copy
 racer = agent()
 
 # Race for n number of episodes
-n_episodes = 200
+N_EPISODES = 200
+LOG_EVERY_N = 1e5
 converged = False
 converged_counter = 0
 initial_converged = False
 streak = []
 episode = 0
-LOG_EVERY_N = 1e5
-#for i in range(n_episodes):
+#for i in range(N_EPISODES):
 while converged_counter < 1e5 and episode < 1e7:
     episode += 1
     old_policy = copy.copy(racer.policy)

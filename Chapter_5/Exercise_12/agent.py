@@ -31,8 +31,8 @@ class agent():
         print("Actions: \n", self.actions)
 
         # Set discount rate
-        self.gamma = 0.9
-        print("Gamma: \n", self.gamma)
+        self.GAMMA = 0.9
+        print("Gamma: \n", self.GAMMA)
         print("==========================\n")
 
         # Initalize an arbitrary policy
@@ -97,7 +97,7 @@ class agent():
             action = self.policy[str(state)]
 
             # Compute Current Returns
-            G = G + (self.gamma**i)*-1
+            G = G + (self.GAMMA**i)*-1
 
             # Store current state action pair pair
             self.returns[str(state + action)].append(G)
