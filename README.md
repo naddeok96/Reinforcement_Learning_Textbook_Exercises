@@ -1,5 +1,8 @@
 # Reinforcement Learning Textbook Exercises
-Completed as part of my RL class
 
-> Chapter 5
-- Exercise 12
+## Table of Contents
+- [Chapter 5 Exercise 12](#c5e12)
+
+---
+
+## Chapter 5 Exercise 12
